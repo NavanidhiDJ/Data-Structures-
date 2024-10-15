@@ -1,0 +1,74 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#define MAX 5
+
+int stack[MAX];
+int top=-1;
+
+void push(int val){
+    if (top==MAX-1){
+        printf("stack overflow!!!");
+    }
+    else {
+        top++;
+        stack[top]=val;
+        printf("the value %d has been pushed into the stack\n",val);
+    }
+}
+
+int pop(){
+    if (top==-1){
+        printf("stack underflow!!!");
+        return -1;
+    }
+    else {
+        return stack[top--];
+    }
+}
+void display(){
+    if (top==-1){
+        printf("the stack is empty\n");
+    }
+    else {
+        printf("the stack is displayed\n");
+        for (int i=top; i>=0;i--){
+            printf("%d\n",stack[i]);
+        }
+    }
+}
+int main(){
+    int val,op;
+    do {
+        printf("\n1.push ");
+        printf("\n2.pop");
+        printf("\n3.display");
+        printf("\n4.exit");
+        printf("enter your option");
+        scanf("%d",&op);
+
+        switch (op) {
+            case 1:
+                printf("Enter the number to be pushed onto the stack: ");
+                scanf("%d", &val);
+                push(val);
+                break;
+            case 2:
+                val = pop();
+                if (val != -1) {
+                    printf("\nThe value deleted from the stack is %d\n", val);
+                }
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                printf("Exiting the program\n");
+                break;
+            default:
+                printf("Invalid case. Please try again\n");
+        }
+    }
+    while (op!=4);
+    return 0;
+}
