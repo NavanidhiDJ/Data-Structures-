@@ -1,0 +1,27 @@
+#include <stdbool.h>
+
+bool isValid(char* s) {
+    int top = -1;
+    char stack[10000];
+    
+    for (int i = 0; s[i] != '\0'; i++) {
+        char cur = s[i];
+        
+        if (cur == '(' || cur == '[' || cur == '{') {
+            stack[++top] = cur;
+        } else {
+            if (top == -1) {
+                return false;
+            } else {
+                char topchar = stack[top--];
+                if ((cur == ')' && topchar != '(') || 
+                    (cur == ']' && topchar != '[') || 
+                    (cur == '}' && topchar != '{')) {
+                    return false;
+                }
+            }
+        }
+    }
+    
+    return top == -1;
+}
