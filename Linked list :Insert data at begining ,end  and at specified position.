@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *createnode(int data) {
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insertatfirst(struct node **head, int data) {
+    struct node* newnode = createnode(data);
+    newnode->next = *head;
+    *head = newnode;
+}
+
+void insertatend(struct node **head, int data) {
+    struct node* newnode = createnode(data);
+    if (*head == NULL) {
+        *head = newnode;
+        return;
+    }
+    struct node* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newnode;
+}
+
+void insertatpos(struct node** head, int data, int pos) {
+    struct node *newnode = createnode(data);
+    if (pos == 0) {
+        insertatfirst(head, data);
+        return;
+    }
+    struct node *temp = *head;
+    for (int i = 0; temp != NULL && i < pos - 1; i++) {
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Position out of range!\n");
+        free(newnode);
+        return;
+    }
+    newnode->next = temp->next;
+    temp->next = newnode;
+}
+
+void print(struct node* head) {
+    struct node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct node *head = NULL;
+
+    printf("Inserting at beginning: 1\n");
+    insertatfirst(&head, 1);
+    print(head);
+
+    printf("Inserting at end: 2\n");
+    insertatend(&head, 2);
+    print(head);
+
+    printf("Inserting at end: 4\n");
+    insertatend(&head, 4);
+    print(head);
+
+    printf("Inserting value 3 at position: 3\n");
+    insertatpos(&head, 3, 3);
+    print(head);
+
+    return 0;
+}
