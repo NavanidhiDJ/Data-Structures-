@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void insert(int *h, int TABLE_SIZE) {
+    int key, index, i, hkey;
+    printf("\nEnter a value to insert into hash table: ");
+    scanf("%d", &key);
+    hkey = key % TABLE_SIZE;
+
+    for (i = 0; i < TABLE_SIZE; i++) {
+        index = (hkey + i) % TABLE_SIZE; 
+        if (h[index] == 0) { 
+            h[index] = key;
+            printf("Inserted %d at index %d (Probes: %d)\n", key, index, i + 1);
+            return;
+        }
+    }
+    printf("\nElement cannot be inserted: Hash table is full\n");
+}
+
+void search(int *h, int TABLE_SIZE) {
+    int key, index, i, hkey;
+    printf("\nEnter the element to search: ");
+    scanf("%d", &key);
+    hkey = key % TABLE_SIZE; 
+
+    for (i = 0; i < TABLE_SIZE; i++) {
+        index = (hkey + i) % TABLE_SIZE;
+        if (h[index] == key) {
+            printf("Value %d is found at index %d (Probes: %d)\n", key, index, i + 1);
+            return;
+        }
+        if (h[index] == 0) {
+            break;
+        }
+    }
+    printf("\nValue %d is not found in the hash table\n", key);
+}
+
+void display(int *h, int TABLE_SIZE) {
+    int i;
+    printf("\nElements in the hash table are:\n");
+    for (i = 0; i < TABLE_SIZE; i++) {
+        printf("Index %d: Value = %d\n", i, h[i]);
+    }
+}
+
+int main() {
+    int TABLE_SIZE;
+
+    printf("Enter the size of the hash table: ");
+    scanf("%d", &TABLE_SIZE);
+
+    int *h = (int *)malloc(TABLE_SIZE * sizeof(int));
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        h[i] = 0; 
+    }
+
+    int opt;
+    while (1) {
+        printf("\nPress 1. Insert\t2. Display\t3. Search\t4. Exit\n");
+        scanf("%d", &opt);
+        switch (opt) {
+            case 1: insert(h, TABLE_SIZE); break;
+            case 2: display(h, TABLE_SIZE); break;
+            case 3: search(h, TABLE_SIZE); break;
+            case 4:
+                free(h);
+                exit(0);
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+    return 0;
+}
